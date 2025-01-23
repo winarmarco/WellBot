@@ -1,6 +1,7 @@
 import argparse
 from enum import Enum
 from user.user import UserType
+from bot.chatbot import BotType
 
 
 class ArgumentParser:
@@ -16,6 +17,7 @@ class ArgumentParser:
                 t.value for t in UserType
             ],  # This will allow only "json" or "input"
             help="Specify user input type (json or input)",
+            default=UserType.INPUT.value,
         )
 
         # Add user profile path argument
@@ -27,10 +29,11 @@ class ArgumentParser:
 
         self.parser.add_argument(
             "--bot",
-            choices=["preprompt", "json", "input"],
-            default="json",
+            choices=[t.value for t in BotType],
+            default=BotType.INPUT.value,
             help="Bot profile type",
         )
+
         self.parser.add_argument(
             "--module",
             type=str,
