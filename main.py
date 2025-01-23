@@ -1,6 +1,6 @@
 from args import ArgumentParser
 from user.user import UserReader
-from bot.chatbot import BotReader
+from bot.chatbot import BotReader, BotUtils
 from chat.chat import Chat
 from termcolor import colored
 from utils import get_contact_psychologist

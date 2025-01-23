@@ -10,6 +10,7 @@ class Chat:
     conversations: list[dict] = []
     user: User
     bot: Bot
+    holistic_wellness_category: list[str] = []
 
     def __init__(self, bot: Bot, user: User, other_instructions: list[dict] = []):
         self.user = user
@@ -62,6 +63,15 @@ class Chat:
                     print()
 
         print("Chat Session Ended")
+
+        holistic_wellness_category = BotUtils().get_holistic_wellness_category(
+            self.conversations
+        )
+        print(
+            f"Based on the conversation above, according to 'Holistic Wellness' aspcet, the user are categorized as {','.join(holistic_wellness_category)}"
+        )
+        self.holistic_wellness_category = holistic_wellness_category
+
         return self.conversations
 
     def export(self, path: str = None):
@@ -76,5 +86,8 @@ class Chat:
         self.bot.export(f"{path}/bot.json")
 
         with open(f"{path}/conversation.json", "w", encoding="utf-8") as file:
-            data = {"conversations": self.conversations}
+            data = {
+                "conversations": self.conversations,
+                "holistic_wellness_category": self.holistic_wellness_category,
+            }
             json.dump(data, file, indent=4, ensure_ascii=False)

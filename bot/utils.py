@@ -3,6 +3,7 @@ from bot.types import _BotProfile
 from user.types import _UserProfile
 import textwrap
 from dataclasses import dataclass, asdict, fields
+import json
 from env import API_KEY
 
 
@@ -155,3 +156,64 @@ class BotUtils:
         bot_response = chat_response.choices[0].message.content
 
         return bot_response
+
+    def get_holistic_wellness_category(self, conversation: list[dict]):
+        holistic_wellness_prompt = f"""
+            You are a mental health psychologist. Based on the conversation below between the chatbot ("assistant") and the "user",
+            can you classify which of the following categories listed below it belongs to:
+
+            ### Categories:
+            - Financial
+            - Social
+            - Spiritual
+            - Emotional
+            - Occupational
+            - Intellectual
+            - Physical
+            - Environmental
+
+            ## Task:
+            - Analyze the conversation and determine which category or categories it belongs to.
+            - Your output should always be in the form of a JSON object with the following structure:
+            {{
+                "holistic_wellness_category": ["Category1", "Category2", ...]
+            }}
+            - There may be more than one category.
+
+            ## Example Output:
+            - If the conversation is about managing finances:
+            {{
+                "holistic_wellness_category": ["Financial"]
+            }}
+            - If the conversation touches on friendships and emotions:
+            {{
+                "holistic_wellness_category": ["Social", "Emotional"]
+            }}
+
+            ## Conversation:
+            {conversation}
+
+            ## Output:
+            Provide the result in the specified JSON format:
+        """
+
+        holistic_wellness_prompt = "\n".join(
+            [line.strip() for line in holistic_wellness_prompt.split("\n")]
+        )
+
+        chat_response = self.client.chat.complete(
+            model=self.model,
+            temperature=0,
+            messages=[{"role": "user", "content": holistic_wellness_prompt}],
+            response_format={"type": "text"},
+        )
+
+        bot_response = chat_response.choices[0].message.content
+
+        cleaned_data = "\n".join([line for line in bot_response.split("\n")[1:-1]])
+
+        parsed_data = json.loads(cleaned_data)
+
+        category = parsed_data["holistic_wellness_category"]
+
+        return category
