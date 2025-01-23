@@ -1,0 +1,32 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Environment variables
+.env
+
+# Logs
+*.log
+
+# Python virtual environments
+.venv/
+env/
+venv/
+
+# IDE configurations
+.idea/
+.vscode/
+
+# Ignore output folder
+output/
+
+# MacOS system files
+.DS_Store
+
+# Ignore compiled bytecode in all folders
+**/__pycache__/
+
+# Ignore specific files and folders
+*.swp
+*.swo
