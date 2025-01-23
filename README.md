@@ -166,6 +166,11 @@ When `--export` is used, the following files will be generated in the `chat_<tim
            "role": "assistant",
            "content": "Halo Mar! Ada yang mau dibicarakan?"
          }
+       ],
+       "holistic_wellness_category": [
+          "Financial",
+          "Emotional",
+          "Occupational"
        ]
      }
      ```
