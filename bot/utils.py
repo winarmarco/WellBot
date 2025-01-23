@@ -73,6 +73,7 @@ class BotUtils:
         # the user wants the bot to be.
         untuned_system_prompt = f"""\
         Create a system prompt to create a mental health chatbot based on the 'Bot Profile' and 'User Profile' below. 
+        This mental health chatbot will interact with the client by using DSM-5 (Diagnostic and Statistical Manual of Mental Disorders, Fifth Edition, as well as  CBT (Cognitive Behavioral Therapy)
         
         ### User Profile
         {user_profile}
@@ -86,7 +87,9 @@ class BotUtils:
         Add an emergency protocol as well where if the User shares anything indicating serious distress or danger, gently advise him to contact someone he trusts or emergency services.
         In the emergency protocol, you can perhaps add the nearest call center.
             
-        Give the goal to the bot as well.
+        Give the goal to the bot as well. 
+        
+        Please also remember to include DSM-5 (Diagnostic and Statistical Manual of Mental Disorders, Fifth Edition, as well as  CBT (Cognitive Behavioral Therapy) as method of interacting with the  interlocutor to improve the wellbeing of the interlocutor
 
         Remember the language and communcation style is the most important, and the chatbot should ALWAYS reply in short and simple - no long paragraphs.
         Make sure the chatbot will reply short and simple - no long paragraphs. Also, speak casually as if the chatbot is having a relaxed chat over coffee. Use emoji when necessary to keep the vibe light
