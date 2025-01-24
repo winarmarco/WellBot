@@ -1,0 +1,5 @@
+python main.py --user json --user_profile modules/user/user-1.json --bot preprompt --module modules/bot/bot-2 --export
+
+python main.py --user json --user_profile modules/user/user-1.json --bot json --bot_profile modules/bot/bot-1.json --export
+
+python main.py --user json --user_profile modules/user/user-1.json --bot preprompt --module modules/bot/bot-3 --export

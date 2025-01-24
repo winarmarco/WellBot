@@ -164,9 +164,7 @@ class BotUtils:
 
     def get_chat_completion(self, message: list):
         chat_response = self.client.chat.complete(
-            model=self.model,
-            temperature=0.7,
-            messages=message,
+            model=self.model, temperature=0.7, messages=message
         )
 
         bot_response = chat_response.choices[0].message.content

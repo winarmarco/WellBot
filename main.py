@@ -23,7 +23,9 @@ if __name__ == "__main__":
     chat = Chat(
         bot=bot,
         user=user,
-        other_instructions=[{"role": "system", "content": get_contact_psychologist()}],
+        other_instructions=[
+            {"role": "system", "content": get_contact_psychologist()}
+        ],  # Fact
     )
     chat.start_chat()
 
