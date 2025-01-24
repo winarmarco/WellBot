@@ -11,6 +11,7 @@ class Chat:
     user: User
     bot: Bot
     holistic_wellness_category: list[str] = []
+    dsm_5_symptoms: list[str] = []
 
     def __init__(self, bot: Bot, user: User, other_instructions: list[dict] = []):
         self.user = user
@@ -68,9 +69,15 @@ class Chat:
             self.conversations
         )
         print(
-            f"Based on the conversation above, according to 'Holistic Wellness' aspcet, the user are categorized as {','.join(holistic_wellness_category)}"
+            f"Based on the conversation above, according to 'Holistic Wellness' aspcet, the user are categorized as: {', '.join(holistic_wellness_category)}"
         )
         self.holistic_wellness_category = holistic_wellness_category
+
+        dsm_5_symptoms = BotUtils().get_diagnose_dsm5(self.conversations)
+        print(
+            f"Based on the conversation above, according to 'DSM-5' aspcet, the user have symptom including: {', '.join(dsm_5_symptoms)}"
+        )
+        self.dsm_5_symptoms = dsm_5_symptoms
 
         return self.conversations
 
@@ -89,5 +96,6 @@ class Chat:
             data = {
                 "conversations": self.conversations,
                 "holistic_wellness_category": self.holistic_wellness_category,
+                "dsm_5_symptoms": self.dsm_5_symptoms,
             }
             json.dump(data, file, indent=4, ensure_ascii=False)

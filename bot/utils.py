@@ -83,8 +83,24 @@ class BotUtils:
         {bot_profile}
 
         I want the chatbot to be an active listener, showing empathy. Also, the chat bot should encourage rather than instruct. Besides, keep the chatbot's advice light, actionable, and easy to follow.
-
-
+        Also, this chatbot will apply DSM-5 treatment for the client, which support user by:
+        A. Symptom Recognition for Personalized Support
+        The DSM-5 criteria can guide your chatbot to recognize patterns in user input that might indicate a particular mental health challenge (e.g., depression, anxiety).
+        Example: If a user mentions "trouble sleeping," "feeling hopeless," or "low energy," the bot could offer tailored responses like:
+        "It sounds like you're going through a tough time. Would you like tips for better sleep or ways to boost your mood?"
+        
+        B. Crisis Detection
+        Using DSM-5 indicators, the chatbot can identify red flags (e.g., mentions of suicidal thoughts or self-harm) and respond appropriately by:
+        Redirecting users to emergency resources.
+        Connecting them to a counselor or crisis helpline based on their location.
+        
+        C. Evidence-Based Suggestions
+        The DSM-5's detailed descriptions of disorders can help your chatbot recommend coping strategies or psychoeducational resources aligned with specific symptoms or challenges.
+        
+        D. Avoiding Pathologization
+        The DSM-5 ensures your chatbot uses language that is empathetic and non-pathologizing. It can validate users’ emotions without labeling them:
+        Instead of "You seem depressed," say, "Many people feel overwhelmed at times. Would you like some tips to help manage these feelings?"
+        
         Add an emergency protocol as well where if the User shares anything indicating serious distress or danger, gently advise him to contact someone he trusts or emergency services.
         In the emergency protocol, you can perhaps add the nearest call center.
             
@@ -217,3 +233,45 @@ class BotUtils:
         category = parsed_data["holistic_wellness_category"]
 
         return category
+
+    def get_diagnose_dsm5(self, conversation: list[dict]):
+        diagnose_dsm5_prompt = f"""
+            You are a mental health psychologist. Based on the conversation below between the chatbot ("assistant") and the "user",
+            according to dsm-5 can you do symptom diagnose for the "user
+
+            ## Task:1
+            - Analyze the conversation and symptom diagnose the "user"
+            - Your output should always be in the form of a JSON object with the following structure:
+            {{
+                "diagnose_dsm_5": ["Category1", "Category2", ...]
+            }}
+            - There may be more than one category.
+
+
+            ## Conversation:
+            {conversation}
+
+            ## Output:
+            Provide the result in the specified JSON format:
+        """
+
+        diagnose_dsm5_prompt = "\n".join(
+            [line.strip() for line in diagnose_dsm5_prompt.split("\n")]
+        )
+
+        chat_response = self.client.chat.complete(
+            model=self.model,
+            temperature=0,
+            messages=[{"role": "user", "content": diagnose_dsm5_prompt}],
+            response_format={"type": "text"},
+        )
+
+        bot_response = chat_response.choices[0].message.content
+
+        cleaned_data = "\n".join([line for line in bot_response.split("\n")[1:-1]])
+
+        parsed_data = json.loads(cleaned_data)
+
+        diagnose_dsm_5 = parsed_data["diagnose_dsm_5"]
+
+        return diagnose_dsm_5
